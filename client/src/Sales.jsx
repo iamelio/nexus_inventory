@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from './App';
+import API_URL from './config';
 import { ShoppingCartIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 
 const Sales = () => {
@@ -14,7 +15,7 @@ const Sales = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await axios.get('http://localhost:5001/api/products');
+                const res = await axios.get('${API_URL}/api/products');
                 setProducts(res.data.products);
             } catch (err) {
                 console.error("Error fetching products", err);
@@ -34,7 +35,7 @@ const Sales = () => {
         }
 
         try {
-            const res = await axios.post('http://localhost:5001/api/sales', {
+            const res = await axios.post('${API_URL}/api/sales', {
                 product_id: selectedProduct,
                 quantity: parseInt(quantity),
                 sold_by: user.id

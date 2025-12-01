@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from './config';
 import { HomeIcon, CubeIcon, CurrencyDollarIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 
 // --- Auth Context ---
@@ -11,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (username, password) => {
         try {
-            const res = await axios.post('http://localhost:5001/api/login', { username, password });
+            const res = await axios.post(`${API_URL}/api/login`, { username, password });
             setUser(res.data.user);
             return true;
         } catch (error) {

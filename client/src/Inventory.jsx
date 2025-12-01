@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_URL from './config';
 import { PlusIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 const Inventory = () => {
@@ -21,7 +22,7 @@ const Inventory = () => {
 
     const fetchProducts = async () => {
         try {
-            const res = await axios.get('http://localhost:5001/api/products');
+            const res = await axios.get('${API_URL}/api/products');
             setProducts(res.data.products);
         } catch (err) {
             console.error("Error fetching products", err);
@@ -37,9 +38,9 @@ const Inventory = () => {
         setError('');
         try {
             if (editingId) {
-                await axios.put(`http://localhost:5001/api/products/${editingId}`, formData);
+                await axios.put(`${API_URL}/api/products/${editingId}`, formData);
             } else {
-                await axios.post('http://localhost:5001/api/products', formData);
+                await axios.post('${API_URL}/api/products', formData);
             }
             fetchProducts();
             resetForm();
@@ -56,7 +57,7 @@ const Inventory = () => {
     const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this product?")) {
             try {
-                await axios.delete(`http://localhost:5001/api/products/${id}`);
+                await axios.delete(`${API_URL}/api/products/${id}`);
                 fetchProducts();
             } catch (err) {
                 console.error("Error deleting product", err);

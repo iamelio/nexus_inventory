@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_URL from './config';
 import { ExclamationTriangleIcon, CurrencyDollarIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 
 const Dashboard = () => {
@@ -11,8 +12,8 @@ const Dashboard = () => {
         const fetchData = async () => {
             try {
                 const [lowStockRes, statsRes] = await Promise.all([
-                    axios.get('http://localhost:5001/api/dashboard/low-stock'),
-                    axios.get('http://localhost:5001/api/dashboard/stats')
+                    axios.get('${API_URL}/api/dashboard/low-stock'),
+                    axios.get('${API_URL}/api/dashboard/stats')
                 ]);
                 setLowStockItems(lowStockRes.data.lowStockItems);
                 setStats(statsRes.data);

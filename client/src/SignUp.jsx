@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from './config';
 import { UserIcon, LockClosedIcon, BriefcaseIcon } from '@heroicons/react/24/solid';
 
 const SignUp = () => {
@@ -14,7 +15,7 @@ const SignUp = () => {
         e.preventDefault();
         setError('');
         try {
-            await axios.post('http://localhost:5001/api/register', { username, password, role });
+            await axios.post('${API_URL}/api/register', { username, password, role });
             navigate('/login');
         } catch (err) {
             setError(err.response?.data?.error || "Registration failed");
