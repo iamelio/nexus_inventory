@@ -12,15 +12,24 @@ process.on("uncaughtException", (err) => {
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // --- Authentication ---
 app.post("/api/login", (req, res) => {
+  console.log("Login attempt:", req.body);
   const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ error: "Username and password are required", received: req.body });
+  }
+
   const sql = "SELECT * FROM users WHERE username = ?";
 
   db.get(sql, [username], (err, user) => {
     if (err) return res.status(500).json({ error: err.message });
-    if (!user) return res.status(401).json({ error: "Invalid credentials" });
+    if (!user) return res.status(401).json({ error: "Invalid credentials (user not found)" });
 
     bcrypt.compare(password, user.password, (err, result) => {
       if (result) {
@@ -28,21 +37,36 @@ app.post("/api/login", (req, res) => {
         const { password, ...userWithoutPass } = user;
         res.json({ user: userWithoutPass });
       } else {
-        res.status(401).json({ error: "Invalid credentials" });
+        res.status(401).json({ error: "Invalid credentials (password mismatch)" });
       }
     });
   });
 });
 
 app.post("/api/register", (req, res) => {
+  console.log("Register attempt:", req.body);
   const { username, password, role } = req.body;
 
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Empty request body. Ensure Content-Type is application/json." });
+  }
+
   if (!username || !password || !role) {
-    return res.status(400).json({ error: "All fields are required" });
+    return res
+      .status(400)
+      .json({
+        error: "All fields are required",
+        missing: { username: !username, password: !password, role: !role },
+        received: req.body,
+      });
   }
 
   if (!["Admin", "Staff"].includes(role)) {
-    return res.status(400).json({ error: "Invalid role. Must be 'Admin' or 'Staff'" });
+    return res
+      .status(400)
+      .json({ error: "Invalid role. Must be 'Admin' or 'Staff'", receivedRole: role });
   }
 
   const saltRounds = 10;
