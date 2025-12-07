@@ -12,8 +12,8 @@ const Dashboard = () => {
         const fetchData = async () => {
             try {
                 const [lowStockRes, statsRes] = await Promise.all([
-                    axios.get('${API_URL}/api/dashboard/low-stock'),
-                    axios.get('${API_URL}/api/dashboard/stats')
+                    axios.get(`${API_URL}/api/dashboard/low-stock`),
+                    axios.get(`${API_URL}/api/dashboard/stats`)
                 ]);
                 setLowStockItems(lowStockRes.data.lowStockItems);
                 setStats(statsRes.data);

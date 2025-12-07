@@ -15,7 +15,7 @@ const SignUp = () => {
         e.preventDefault();
         setError('');
         try {
-            await axios.post('${API_URL}/api/register', { username, password, role });
+            await axios.post(`${API_URL}/api/register`, { username, password, role });
             navigate('/login');
         } catch (err) {
             setError(err.response?.data?.error || "Registration failed");

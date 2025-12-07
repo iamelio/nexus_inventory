@@ -22,7 +22,7 @@ const Inventory = () => {
 
     const fetchProducts = async () => {
         try {
-            const res = await axios.get('${API_URL}/api/products');
+            const res = await axios.get(`${API_URL}/api/products`);
             setProducts(res.data.products);
         } catch (err) {
             console.error("Error fetching products", err);
@@ -40,7 +40,7 @@ const Inventory = () => {
             if (editingId) {
                 await axios.put(`${API_URL}/api/products/${editingId}`, formData);
             } else {
-                await axios.post('${API_URL}/api/products', formData);
+                await axios.post(`${API_URL}/api/products`, formData);
             }
             fetchProducts();
             resetForm();

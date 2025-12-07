@@ -15,7 +15,7 @@ const Sales = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await axios.get('${API_URL}/api/products');
+                const res = await axios.get(`${API_URL}/api/products`);
                 setProducts(res.data.products);
             } catch (err) {
                 console.error("Error fetching products", err);
@@ -35,7 +35,7 @@ const Sales = () => {
         }
 
         try {
-            const res = await axios.post('${API_URL}/api/sales', {
+            const res = await axios.post(`${API_URL}/api/sales`, {
                 product_id: selectedProduct,
                 quantity: parseInt(quantity),
                 sold_by: user.id
